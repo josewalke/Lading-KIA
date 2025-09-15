@@ -178,7 +178,7 @@ export function HeroSection() {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.6, delay: 2.6 }}
                   >
-                    Disponible desde el 19 de septiembre
+                    19 de septiembre
                   </motion.div>
                 </div>
               </motion.div>
