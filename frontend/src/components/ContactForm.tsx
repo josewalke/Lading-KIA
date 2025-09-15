@@ -7,6 +7,7 @@ import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 import { MessageSquare, Send } from "lucide-react";
 import { toast } from "sonner@2.0.3";
+import { sendAppointmentConfirmation } from "../services/smsService";
 
 interface FormData {
   name: string;
@@ -58,29 +59,68 @@ export function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.phone) {
-      toast.error("Por favor completa al menos tu nombre y teléfono");
+    if (!formData.name || !formData.phone || !formData.appointmentTime) {
+      toast.error("Por favor completa tu nombre, teléfono y horario preferido");
+      return;
+    }
+
+    // Validar formato de teléfono
+    const phoneRegex = /^(\+34|0034|34)?[6|7|8|9][0-9]{8}$/;
+    const cleanPhone = formData.phone.replace(/\s/g, '');
+    
+    if (!phoneRegex.test(cleanPhone)) {
+      toast.error("Por favor introduce un número de teléfono español válido (ej: 666123456)");
       return;
     }
 
     setIsSubmitting(true);
     
-    // Simular envío de SMS
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    toast.success("¡Cita reservada correctamente! Te confirmaremos por SMS", {
-      description: `Hemos reservado tu cita para ${formData.appointmentTime === 'morning' ? 'la mañana' : 'la tarde'}. Te enviaremos la confirmación a ${formData.phone}`,
-      duration: 5000,
-    });
-    
-    // Reset form
-    setFormData({
-      name: '',
-      phone: '',
-      email: '',
-      appointmentTime: '',
-      message: ''
-    });
+    try {
+      // Formatear número de teléfono para España
+      let formattedPhone = cleanPhone;
+      if (formattedPhone.startsWith('6') || formattedPhone.startsWith('7') || formattedPhone.startsWith('8') || formattedPhone.startsWith('9')) {
+        formattedPhone = '+34' + formattedPhone;
+      } else if (formattedPhone.startsWith('0034')) {
+        formattedPhone = '+' + formattedPhone.substring(2);
+      } else if (formattedPhone.startsWith('34')) {
+        formattedPhone = '+' + formattedPhone;
+      }
+
+      // Enviar SMS de confirmación
+      const smsResult = await sendAppointmentConfirmation(
+        formattedPhone,
+        formData.name,
+        formData.appointmentTime,
+        formData.message
+      );
+
+      if (smsResult.success) {
+        toast.success("¡Cita reservada correctamente! 📱", {
+          description: `SMS de confirmación enviado a ${formattedPhone}. Te contactaremos pronto para confirmar la hora exacta.`,
+          duration: 6000,
+        });
+        
+        // Reset form
+        setFormData({
+          name: '',
+          phone: '',
+          email: '',
+          appointmentTime: '',
+          message: ''
+        });
+      } else {
+        toast.error("Error al enviar confirmación por SMS", {
+          description: smsResult.error || "Inténtalo de nuevo o contacta directamente por teléfono",
+          duration: 5000,
+        });
+      }
+    } catch (error) {
+      console.error('Error en el formulario:', error);
+      toast.error("Error al procesar la solicitud", {
+        description: "Por favor inténtalo de nuevo o contacta directamente",
+        duration: 5000,
+      });
+    }
     
     setIsSubmitting(false);
   };
@@ -152,7 +192,7 @@ export function ContactForm() {
                   type="tel"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  placeholder="666 123 456"
+                  placeholder="666123456 (sin espacios)"
                   className="text-base"
                   required
                 />
