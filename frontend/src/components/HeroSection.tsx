@@ -1,8 +1,8 @@
 import { MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 import exampleImage from 'figma:asset/8093acad2ccf6921667e53e6943c218bd3e0998e.png';
-import logoKiaBlanco from '../assets/logoKiaBlanco.png';
-import logoKiaRojo from '../assets/LogoKiaRojo.png';
+import logoBlanco from '../assets/LogoBlanco.jpeg';
+import logoRojo from '../assets/LogoRojo.jpeg';
 
 export function HeroSection() {
   // Animaciones profesionales
@@ -45,26 +45,6 @@ export function HeroSection() {
         backgroundImage: `url(${exampleImage})`
       }}
     >
-      {/* Logo KIA Blanco - Esquina superior izquierda */}
-      <motion.div 
-        className="absolute top-4 left-4 md:top-6 md:left-6 z-20"
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
-        whileHover={{ scale: 1.1, transition: { duration: 0.2 } }}
-      >
-        <img 
-          src={logoKiaBlanco} 
-          alt="KIA Logo" 
-          className="h-12 md:h-16 w-auto"
-          style={{ 
-            filter: 'drop-shadow(3px 3px 6px rgba(0,0,0,0.8))',
-            backgroundColor: 'rgba(0,0,0,0.3)',
-            borderRadius: '8px',
-            padding: '4px'
-          }}
-        />
-      </motion.div>
       
         <div className="container mx-auto px-4 py-8 md:py-12 lg:py-8 relative z-10">
           {/* Main Content Grid */}
@@ -199,26 +179,6 @@ export function HeroSection() {
                 whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
               >
                 <div className="text-center space-y-2 md:space-y-3">
-                  {/* Logo KIA Rojo pequeño en el banner */}
-                  <motion.div 
-                    className="flex justify-center mb-2"
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.6, delay: 2.3 }}
-                  >
-                    <img 
-                      src={logoKiaRojo} 
-                      alt="KIA Logo" 
-                      className="h-6 md:h-8 w-auto"
-                      style={{ 
-                        filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.7))',
-                        backgroundColor: 'rgba(255,255,255,0.9)',
-                        borderRadius: '4px',
-                        padding: '2px'
-                      }}
-                    />
-                  </motion.div>
-                  
                   <motion.div 
                     className="text-xl sm:text-2xl font-bold text-white drop-shadow-lg"
                     style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.7)' }}
@@ -252,24 +212,18 @@ export function HeroSection() {
           </motion.div>
       </div>
       
-      {/* Logo KIA Rojo - Esquina superior derecha */}
+      {/* Floating KIA Logo */}
       <motion.div 
-        className="absolute top-4 right-4 md:top-6 md:right-6 z-20"
+        className="absolute top-4 right-4 md:top-6 md:right-6 bg-red-600 rounded-full p-3 md:p-4 shadow-lg"
         initial={{ opacity: 0, scale: 0, rotate: -180 }}
         animate={{ opacity: 1, scale: 1, rotate: 0 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 3.0 }}
         whileHover={{ scale: 1.1, rotate: 5, transition: { duration: 0.2 } }}
       >
         <img 
-          src={logoKiaRojo} 
+          src={logoBlanco} 
           alt="KIA Logo" 
-          className="h-12 md:h-16 w-auto"
-          style={{ 
-            filter: 'drop-shadow(3px 3px 6px rgba(0,0,0,0.8))',
-            backgroundColor: 'rgba(255,255,255,0.9)',
-            borderRadius: '8px',
-            padding: '4px'
-          }}
+          className="w-12 h-12 md:w-16 md:h-16"
         />
       </motion.div>
       
