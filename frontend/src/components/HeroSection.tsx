@@ -1,7 +1,7 @@
 import { MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 import exampleImage from 'figma:asset/8093acad2ccf6921667e53e6943c218bd3e0998e.png';
-import logoKiaBlanco from '../assets/LogoKiaBlanco.png';
+import logoKiaBlanco from '../assets/logoKiaBlanco.png';
 import logoKiaRojo from '../assets/LogoKiaRojo.png';
 
 export function HeroSection() {
