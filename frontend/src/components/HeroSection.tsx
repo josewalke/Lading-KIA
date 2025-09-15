@@ -203,7 +203,7 @@ export function HeroSection() {
       
       {/* Bottom Scroll Indicator */}
       <motion.div 
-        className="absolute bottom-2 md:bottom-4 left-1/2 transform -translate-x-1/2 text-white/60"
+        className="absolute bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2 text-white/60"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 3.2 }}
@@ -213,7 +213,7 @@ export function HeroSection() {
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
-          <span className="text-xs md:text-sm">Desliza para más información</span>
+          <span className="hidden md:block text-xs md:text-sm">Desliza para más información</span>
           <div className="w-5 h-8 md:w-6 md:h-10 border-2 border-white/40 rounded-full flex justify-center">
             <motion.div 
               className="w-1 h-2 md:h-3 bg-white/60 rounded-full mt-1 md:mt-2"
