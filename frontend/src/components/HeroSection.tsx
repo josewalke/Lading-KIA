@@ -56,8 +56,13 @@ export function HeroSection() {
         <img 
           src={logoKiaBlanco} 
           alt="KIA Logo" 
-          className="h-12 md:h-16 w-auto drop-shadow-lg"
-          style={{ filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.7))' }}
+          className="h-12 md:h-16 w-auto"
+          style={{ 
+            filter: 'drop-shadow(3px 3px 6px rgba(0,0,0,0.8))',
+            backgroundColor: 'rgba(0,0,0,0.3)',
+            borderRadius: '8px',
+            padding: '4px'
+          }}
         />
       </motion.div>
       
@@ -205,6 +210,12 @@ export function HeroSection() {
                       src={logoKiaRojo} 
                       alt="KIA Logo" 
                       className="h-6 md:h-8 w-auto"
+                      style={{ 
+                        filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.7))',
+                        backgroundColor: 'rgba(255,255,255,0.9)',
+                        borderRadius: '4px',
+                        padding: '2px'
+                      }}
                     />
                   </motion.div>
                   
@@ -252,8 +263,13 @@ export function HeroSection() {
         <img 
           src={logoKiaRojo} 
           alt="KIA Logo" 
-          className="h-12 md:h-16 w-auto drop-shadow-lg"
-          style={{ filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.7))' }}
+          className="h-12 md:h-16 w-auto"
+          style={{ 
+            filter: 'drop-shadow(3px 3px 6px rgba(0,0,0,0.8))',
+            backgroundColor: 'rgba(255,255,255,0.9)',
+            borderRadius: '8px',
+            padding: '4px'
+          }}
         />
       </motion.div>
       
