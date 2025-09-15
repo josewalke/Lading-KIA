@@ -1,8 +1,8 @@
 import { MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 import exampleImage from 'figma:asset/8093acad2ccf6921667e53e6943c218bd3e0998e.png';
-import logoBlanco from '../assets/LogoBlanco.jpeg';
-import logoRojo from '../assets/LogoRojo.jpeg';
+import logoKiaBlanco from '../assets/LogoKiaBlanco.png';
+import logoKiaRojo from '../assets/LogoKiaRojo.png';
 
 export function HeroSection() {
   // Animaciones profesionales
@@ -62,8 +62,8 @@ export function HeroSection() {
               {/* Main Title */}
               <motion.div className="space-y-3 md:space-y-4">
                 <motion.h1 
-                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white leading-tight text-left mt-[-20px] sm:mt-[-40px] lg:mt-[-100px] mr-[0px] mb-[40px] sm:mb-[60px] lg:mb-[75px] ml-[0px] drop-shadow-2xl"
-                  style={{ textShadow: '3px 3px 6px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5)' }}
+                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white leading-tight text-left mt-[-20px] sm:mt-[-40px] lg:mt-[-100px] mr-[0px] mb-[40px] sm:mb-[60px] lg:mb-[75px] ml-[0px]"
+                  style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.4)' }}
                   initial={{ opacity: 0, y: 100 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
@@ -72,20 +72,20 @@ export function HeroSection() {
                   <br />
                   Concesionario
                   <br />
-                  <motion.span 
-                    className="text-red-500"
+                  <motion.img 
+                    src={logoKiaRojo}
+                    alt="KIA"
+                    className="inline-block h-20 sm:h-24 md:h-32 lg:h-40 xl:h-48"
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
-                  >
-                    KIA
-                  </motion.span>
+                  />
                 </motion.h1>
                 
                 {/* Location */}
                 <motion.div 
-                  className="flex items-center space-x-2 md:space-x-3 text-lg sm:text-xl lg:text-2xl text-white drop-shadow-lg"
-                  style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.7)' }}
+                  className="flex items-center space-x-2 md:space-x-3 text-lg sm:text-xl lg:text-2xl text-white"
+                  style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.3)' }}
                   initial={{ opacity: 0, x: -30 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6, ease: "easeOut", delay: 1.2 }}
@@ -97,8 +97,8 @@ export function HeroSection() {
               
               {/* Description */}
               <motion.p 
-                className="text-base sm:text-lg lg:text-xl text-white leading-relaxed max-w-xl drop-shadow-lg"
-                style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.7)' }}
+                className="text-base sm:text-lg lg:text-xl text-white leading-relaxed max-w-xl"
+                style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.3)' }}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: "easeOut", delay: 1.4 }}
@@ -110,101 +110,75 @@ export function HeroSection() {
           
             {/* Right Content - Stats & Features */}
             <motion.div 
-              className="lg:col-span-5 space-y-6 md:space-y-8 mt-8 lg:mt-0"
+              className="lg:col-span-5 space-y-8 md:space-y-12 mt-8 lg:mt-0"
               variants={fadeInRight}
             >
               {/* Stats Cards */}
               <motion.div 
-                className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-3 md:gap-4"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 md:gap-6"
                 variants={staggerContainer}
               >
                 <motion.div 
-                  className="p-4 md:p-6 text-center"
+                  className="p-6 md:p-8 text-center"
                   variants={scaleIn}
                   whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
                 >
                   <motion.div 
-                    className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-1 md:mb-2 drop-shadow-lg"
-                    style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.7)' }}
+                    className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-3 md:mb-4"
+                    style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.3)' }}
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.5, ease: "easeOut", delay: 1.6 }}
                   >
                     20+
                   </motion.div>
-                  <div className="text-sm sm:text-base text-white drop-shadow-md" style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.6)' }}>Modelos Disponibles</div>
+                  <div className="text-lg sm:text-xl text-white" style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.2)' }}>Modelos Disponibles</div>
                 </motion.div>
                 
                 <motion.div 
-                  className="p-4 md:p-6 text-center"
+                  className="p-6 md:p-8 text-center"
                   variants={scaleIn}
                   whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
                 >
                   <motion.div 
-                    className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-1 md:mb-2 drop-shadow-lg"
-                    style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.7)' }}
+                    className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-3 md:mb-4"
+                    style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.3)' }}
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.5, ease: "easeOut", delay: 1.8 }}
                   >
                     5★
                   </motion.div>
-                  <div className="text-sm sm:text-base text-white drop-shadow-md" style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.6)' }}>Atención al Cliente</div>
-                </motion.div>
-                
-                <motion.div 
-                  className="p-4 md:p-6 text-center"
-                  variants={scaleIn}
-                  whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
-                >
-                  <motion.div 
-                    className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-1 md:mb-2 drop-shadow-lg"
-                    style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.7)' }}
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 0.5, ease: "easeOut", delay: 2.0 }}
-                  >
-                    0%
-                  </motion.div>
-                  <div className="text-sm sm:text-base text-white drop-shadow-md" style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.6)' }}>Financiación Especial</div>
+                  <div className="text-lg sm:text-xl text-white" style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.2)' }}>Atención al Cliente</div>
                 </motion.div>
               </motion.div>
               
               {/* Special Offer Banner */}
               <motion.div 
-                className="bg-gradient-to-r from-red-600/90 to-red-700/90 rounded-xl p-4 md:p-6 border border-red-400/30"
+                className="bg-gradient-to-r from-red-600/90 to-red-700/90 rounded-xl p-6 md:p-8 border border-red-400/30"
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: "easeOut", delay: 2.2 }}
                 whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
               >
-                <div className="text-center space-y-2 md:space-y-3">
+                <div className="text-center space-y-3 md:space-y-4">
                   <motion.div 
-                    className="text-xl sm:text-2xl font-bold text-white drop-shadow-lg"
-                    style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.7)' }}
+                    className="text-2xl sm:text-3xl font-bold text-white"
+                    style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.3)' }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.6, delay: 2.4 }}
                   >
-                    ¡Oferta de Inauguración!
+                    ¡Venta Secreta!
                   </motion.div>
                   <motion.div 
-                    className="text-sm sm:text-base text-white drop-shadow-md"
-                    style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.6)' }}
+                    className="text-base sm:text-lg text-white"
+                    style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.2)' }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.6, delay: 2.6 }}
                   >
-                    Descuentos exclusivos hasta el 30%
-                  </motion.div>
-                  <motion.div 
-                    className="text-xs sm:text-sm text-white drop-shadow-sm"
-                    style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.6, delay: 2.8 }}
-                  >
-                    * Válido hasta fin de mes
+                    Disponible desde el 19 de septiembre
                   </motion.div>
                 </div>
               </motion.div>
@@ -221,7 +195,7 @@ export function HeroSection() {
         whileHover={{ scale: 1.1, rotate: 5, transition: { duration: 0.2 } }}
       >
         <img 
-          src={logoBlanco} 
+          src={logoKiaBlanco} 
           alt="KIA Logo" 
           className="w-12 h-12 md:w-16 md:h-16"
         />

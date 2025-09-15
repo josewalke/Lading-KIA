@@ -12,7 +12,7 @@ interface FormData {
   name: string;
   phone: string;
   email: string;
-  interest: string;
+  appointmentTime: string;
   message: string;
 }
 
@@ -21,7 +21,7 @@ export function ContactForm() {
     name: '',
     phone: '',
     email: '',
-    interest: '',
+    appointmentTime: '',
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -68,8 +68,8 @@ export function ContactForm() {
     // Simular envío de SMS
     await new Promise(resolve => setTimeout(resolve, 2000));
     
-    toast.success("¡SMS enviado correctamente! Te contactaremos pronto", {
-      description: `Hemos enviado un SMS a ${formData.phone} con la información solicitada`,
+    toast.success("¡Cita reservada correctamente! Te confirmaremos por SMS", {
+      description: `Hemos reservado tu cita para ${formData.appointmentTime === 'morning' ? 'la mañana' : 'la tarde'}. Te enviaremos la confirmación a ${formData.phone}`,
       duration: 5000,
     });
     
@@ -78,7 +78,7 @@ export function ContactForm() {
       name: '',
       phone: '',
       email: '',
-      interest: '',
+      appointmentTime: '',
       message: ''
     });
     
@@ -106,10 +106,10 @@ export function ContactForm() {
               >
                 <MessageSquare className="w-5 h-5" />
               </motion.div>
-              <span>Solicita Información</span>
+              <span>Reserva tu Cita</span>
             </CardTitle>
             <p className="text-sm opacity-90">
-              Te enviamos toda la información por SMS
+              Elige tu horario preferido para visitarnos
             </p>
           </CardHeader>
         </motion.div>
@@ -178,32 +178,28 @@ export function ContactForm() {
             </motion.div>
             
             <motion.div className="space-y-2" variants={fadeInUp}>
-              <Label htmlFor="interest">¿Qué información necesitas? *</Label>
+              <Label htmlFor="appointmentTime">¿Cuándo prefieres venir? *</Label>
               <motion.div
                 whileFocus={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}
               >
                 <select 
-                  id="interest"
-                  name="interest"
-                  value={formData.interest}
+                  id="appointmentTime"
+                  name="appointmentTime"
+                  value={formData.appointmentTime}
                   onChange={handleInputChange}
                   className="w-full p-3 border border-border rounded-md bg-background text-base"
                   required
                 >
-                  <option value="">Selecciona qué te interesa</option>
-                  <option value="precios">Precios y modelos disponibles</option>
-                  <option value="financiacion">Opciones de financiación</option>
-                  <option value="testdrive">Agendar test drive</option>
-                  <option value="intercambio">Intercambio de vehículo</option>
-                  <option value="inauguracion">Ofertas de inauguración</option>
-                  <option value="mantenimiento">Servicio técnico</option>
+                  <option value="">Selecciona tu horario preferido</option>
+                  <option value="morning">Por la mañana (9:00 - 13:00)</option>
+                  <option value="afternoon">Por la tarde (14:00 - 18:00)</option>
                 </select>
               </motion.div>
             </motion.div>
             
             <motion.div className="space-y-2" variants={fadeInUp}>
-              <Label htmlFor="message">Cuéntanos más (opcional)</Label>
+              <Label htmlFor="message">¿Qué te interesa ver? (opcional)</Label>
               <motion.div
                 whileFocus={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}
@@ -213,7 +209,7 @@ export function ContactForm() {
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
-                  placeholder="¿Qué modelo te gusta? ¿Tienes coche para intercambio?..."
+                  placeholder="¿Qué modelo te gusta? ¿Test drive? ¿Financiación?..."
                   rows={3}
                   className="text-base"
                 />
@@ -240,7 +236,7 @@ export function ContactForm() {
                     </motion.div>
                   ) : (
                     <>
-                      Recibir información por SMS
+                      Reservar mi Cita
                       <motion.div
                         animate={{ x: [0, 5, 0] }}
                         transition={{ duration: 1.5, repeat: Infinity }}
@@ -259,7 +255,7 @@ export function ContactForm() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.8 }}
             >
-              100% gratuito • Sin compromiso • Respuesta garantizada
+              100% gratuito • Sin compromiso • Confirmación por SMS
             </motion.p>
           </motion.form>
         </CardContent>
