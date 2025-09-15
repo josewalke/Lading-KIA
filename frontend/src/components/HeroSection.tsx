@@ -163,8 +163,8 @@ export function HeroSection() {
               >
                 <div className="text-center space-y-3 md:space-y-4">
                   <motion.div 
-                    className="text-2xl sm:text-3xl font-bold text-white"
-                    style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.3)' }}
+                    className="text-3xl sm:text-4xl md:text-5xl font-bold text-white"
+                    style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.6, delay: 2.4 }}
@@ -172,8 +172,8 @@ export function HeroSection() {
                     ¡Venta Secreta!
                   </motion.div>
                   <motion.div 
-                    className="text-base sm:text-lg text-white"
-                    style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.2)' }}
+                    className="text-lg sm:text-xl md:text-2xl text-white font-semibold"
+                    style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.4)' }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.6, delay: 2.6 }}
