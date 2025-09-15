@@ -213,12 +213,20 @@ export function HeroSection() {
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
-          <span 
-            className="text-base md:text-lg font-semibold text-white px-4 py-2 rounded-full bg-red-600/90 backdrop-blur-sm border border-red-400/30 shadow-lg"
-            style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.9)' }}
-          >
-            Desliza para más información
-          </span>
+          <div className="text-center space-y-1">
+            <span 
+              className="text-base md:text-lg font-semibold text-white px-4 py-2 rounded-full bg-red-600/90 backdrop-blur-sm border border-red-400/30 shadow-lg block"
+              style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.9)' }}
+            >
+              Desliza para más información
+            </span>
+            <span 
+              className="text-sm md:text-base font-medium text-white px-3 py-1 rounded-full bg-black/40 backdrop-blur-sm border border-white/20 shadow-md block"
+              style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.8)' }}
+            >
+              Disponible desde el 19 de septiembre
+            </span>
+          </div>
           <div className="w-8 h-12 md:w-9 md:h-14 border-3 border-white rounded-full flex justify-center bg-red-600/20 backdrop-blur-sm shadow-lg">
             <motion.div 
               className="w-2 h-4 md:h-5 bg-white rounded-full mt-2 md:mt-2.5"
