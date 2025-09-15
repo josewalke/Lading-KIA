@@ -203,22 +203,27 @@ export function HeroSection() {
       
       {/* Bottom Scroll Indicator */}
       <motion.div 
-        className="absolute bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2 text-white/60"
+        className="absolute bottom-2 md:bottom-6 left-1/2 transform -translate-x-1/2 z-20"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 3.2 }}
       >
         <motion.div 
-          className="flex flex-col items-center space-y-1 md:space-y-2"
-          animate={{ y: [0, 10, 0] }}
+          className="flex flex-col items-center space-y-3 md:space-y-4"
+          animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
-          <span className="text-xs md:text-sm">Desliza para más información</span>
-          <div className="w-5 h-8 md:w-6 md:h-10 border-2 border-white/40 rounded-full flex justify-center">
+          <span 
+            className="text-base md:text-lg font-semibold text-white px-4 py-2 rounded-full bg-red-600/90 backdrop-blur-sm border border-red-400/30 shadow-lg"
+            style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.9)' }}
+          >
+            Desliza para más información
+          </span>
+          <div className="w-8 h-12 md:w-9 md:h-14 border-3 border-white rounded-full flex justify-center bg-red-600/20 backdrop-blur-sm shadow-lg">
             <motion.div 
-              className="w-1 h-2 md:h-3 bg-white/60 rounded-full mt-1 md:mt-2"
+              className="w-2 h-4 md:h-5 bg-white rounded-full mt-2 md:mt-2.5"
               animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
             />
           </div>
         </motion.div>
