@@ -120,9 +120,8 @@ export function ContactForm() {
       return;
     }
 
-    // Validar formato de teléfono español
-    // Acepta números que empiecen con 6, 7, 8, 9 (móviles) o 9 (fijos)
-    const phoneRegex = /^(\+34|0034|34)?[6-9][0-9]{8}$/;
+    // Validar formato de teléfono - acepta cualquier número con al menos 7 dígitos
+    const phoneRegex = /^[\+]?[0-9\s\-\(\)]{7,}$/;
     const cleanPhone = formData.phone.replace(/\s/g, '');
     
     console.log('📞 [FRONTEND] Validando teléfono:', {
@@ -133,7 +132,7 @@ export function ContactForm() {
     
     if (!phoneRegex.test(cleanPhone)) {
       console.error('❌ [FRONTEND] Teléfono inválido:', cleanPhone);
-      toast.error("Por favor introduce un número de teléfono español válido (ej: 666123456, 912345678)");
+      toast.error("Por favor introduce un número de teléfono válido (mínimo 7 dígitos)");
       return;
     }
 
