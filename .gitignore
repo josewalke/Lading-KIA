@@ -4,10 +4,11 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Build outputs
-dist/
+# Production builds
 build/
-.vite/
+dist/
+.next/
+out/
 
 # Environment variables
 .env
@@ -16,46 +17,34 @@ build/
 .env.test.local
 .env.production.local
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
+# Backend files (Node.js server)
+backend/
+server.js
+package-lock.json
 
-# OS
-.DS_Store
-Thumbs.db
+# Database files
+*.sqlite
+*.db
 
 # Logs
-logs
+logs/
 *.log
 
 # Runtime data
-pids
+pids/
 *.pid
 *.seed
 *.pid.lock
 
 # Coverage directory used by tools like istanbul
 coverage/
-
-# nyc test coverage
-.nyc_output
+.nyc_output/
 
 # Dependency directories
 jspm_packages/
 
 # Optional npm cache directory
 .npm
-
-# Optional eslint cache
-.eslintcache
-
-# Microbundle cache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
 
 # Optional REPL history
 .node_repl_history
@@ -66,29 +55,77 @@ jspm_packages/
 # Yarn Integrity file
 .yarn-integrity
 
+# dotenv environment variables file
+.env
+
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
 
-# Next.js build output
+# next.js build output
 .next
 
-# Nuxt.js build / generate output
+# nuxt.js build output
 .nuxt
 
-# Gatsby files
-.cache/
-public
+# vuepress build output
+.vuepress/dist
 
-# Storybook build outputs
-.out
-.storybook-out
+# Serverless directories
+.serverless
 
-# Temporary folders
-tmp/
-temp/
+# FuseBox cache
+.fusebox/
 
-# Local configuration files (NO SUBIR A GITHUB)
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Excel files (processed data)
+*.xlsx
+*.xls
+*.csv
+
+# JSON files with processed data
+clientes-*.json
+numeros-*.json
+duplicados-*.json
+*-completo.json
+*-unicos.json
+*-clasificados.json
+
+# SMS configuration
+sms-config.json
+
+# Local configuration files
 local-config.txt
-*.local.txt
-config-local.*
+twilio-config.txt
+env-example.txt
+SMS-SETUP.md
+twilio-integration-example.js
+
+# Test files
+test-*.js
+*-test.js

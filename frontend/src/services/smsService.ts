@@ -1,78 +1,92 @@
-// Servicio SMS con Twilio
-import twilio from 'twilio';
+// Servicio para guardar citas (sin SMS)
+const BACKEND_URL = 'http://localhost:3001';
 
-// Configuración de Twilio desde variables de entorno
-const accountSid = import.meta.env.VITE_TWILIO_ACCOUNT_SID;
-const authToken = import.meta.env.VITE_TWILIO_AUTH_TOKEN;
-const messagingServiceSid = import.meta.env.VITE_TWILIO_MESSAGING_SERVICE_SID;
-
-if (!accountSid || !authToken || !messagingServiceSid) {
-  throw new Error('Variables de entorno de Twilio no configuradas. Ver archivo env-example.txt');
-}
-
-const client = twilio(accountSid, authToken);
-
-export interface SMSResult {
+export interface AppointmentResult {
   success: boolean;
-  messageId?: string;
+  appointmentId?: number;
+  phone?: string;
   error?: string;
 }
 
-export async function sendSMS(to: string, message: string): Promise<SMSResult> {
-  try {
-    // Validar número de teléfono
-    if (!to || !to.startsWith('+')) {
-      return {
-        success: false,
-        error: 'Número de teléfono inválido. Debe incluir código de país (+34...)'
-      };
-    }
-
-    // Enviar SMS
-    const result = await client.messages.create({
-      to: to,
-      messagingServiceSid: messagingServiceSid,
-      body: message
-    });
-
-    console.log('SMS enviado exitosamente:', result.sid);
-    
-    return {
-      success: true,
-      messageId: result.sid
-    };
-  } catch (error: any) {
-    console.error('Error enviando SMS:', error);
-    
-    return {
-      success: false,
-      error: error.message || 'Error desconocido al enviar SMS'
-    };
-  }
-}
-
-// Función específica para confirmación de cita
-export async function sendAppointmentConfirmation(
+// Función para guardar cita sin SMS
+export async function saveAppointment(
   phone: string, 
   name: string, 
   appointmentTime: string,
-  message?: string
-): Promise<SMSResult> {
-  const timeText = appointmentTime === 'morning' ? 'la mañana (9:00-13:00)' : 'la tarde (14:00-18:00)';
-  
-  const smsMessage = `¡Hola ${name}! 🚗
+  message?: string,
+  email?: string
+): Promise<AppointmentResult> {
+  console.log('🌐 [APPOINTMENT-SERVICE] Iniciando guardado de cita:', {
+    timestamp: new Date().toISOString(),
+    backendUrl: BACKEND_URL,
+    payload: {
+      name,
+      phone,
+      email: email || '',
+      appointmentTime,
+      message: message || ''
+    }
+  });
 
-✅ Hemos recibido tu solicitud de cita para ${timeText}.
+  try {
+    console.log('📡 [APPOINTMENT-SERVICE] Realizando fetch al backend...');
+    
+    const response = await fetch(`${BACKEND_URL}/api/appointment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name,
+        phone,
+        email: email || '',
+        appointmentTime,
+        message: message || ''
+      })
+    });
 
-📍 Ubicación: Polígono Carretera Amarilla
-📅 Fecha: 19 de septiembre
-⏰ Horario: ${timeText}
+    console.log('📨 [APPOINTMENT-SERVICE] Respuesta HTTP recibida:', {
+      status: response.status,
+      statusText: response.statusText,
+      ok: response.ok,
+      headers: Object.fromEntries(response.headers.entries())
+    });
 
-${message ? `📝 Notas: ${message}` : ''}
+    const result = await response.json();
+    console.log('📋 [APPOINTMENT-SERVICE] Datos de respuesta:', result);
 
-Te contactaremos pronto para confirmar la hora exacta.
+    if (!response.ok) {
+      console.error('❌ [APPOINTMENT-SERVICE] Error en respuesta del servidor:', {
+        status: response.status,
+        error: result.error
+      });
+      
+      return {
+        success: false,
+        error: result.error || 'Error del servidor'
+      };
+    }
 
-¡Gracias por elegir KIA! 🎉`;
+    console.log('✅ [APPOINTMENT-SERVICE] Cita guardada exitosamente:', {
+      appointmentId: result.appointmentId,
+      phone: result.phone
+    });
 
-  return await sendSMS(phone, smsMessage);
+    return {
+      success: true,
+      appointmentId: result.appointmentId,
+      phone: result.phone
+    };
+  } catch (error: any) {
+    console.error('💥 [APPOINTMENT-SERVICE] Error crítico en la comunicación:', {
+      error: error.message,
+      stack: error.stack,
+      timestamp: new Date().toISOString()
+    });
+    
+    return {
+      success: false,
+      error: 'Error de conexión con el servidor'
+    };
+  }
 }

@@ -7,7 +7,7 @@ import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 import { MessageSquare, Send } from "lucide-react";
 import { toast } from "sonner@2.0.3";
-import { sendAppointmentConfirmation } from "../services/smsService";
+import { saveAppointment } from "../services/smsService";
 
 interface FormData {
   name: string;
@@ -50,16 +50,71 @@ export function ContactForm() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    
+    // Manejo especial para el campo de teléfono
+    if (name === 'phone') {
+      let formattedValue = value;
+      
+      // Remover todos los caracteres no numéricos excepto + al inicio
+      formattedValue = formattedValue.replace(/[^\d+]/g, '');
+      
+      // Si empieza con +34, mantenerlo
+      if (formattedValue.startsWith('+34')) {
+        // Limitar a +34 + 9 dígitos máximo
+        if (formattedValue.length > 12) {
+          formattedValue = formattedValue.substring(0, 12);
+        }
+      }
+      // Si empieza con 34, agregar +
+      else if (formattedValue.startsWith('34')) {
+        formattedValue = '+' + formattedValue;
+        if (formattedValue.length > 12) {
+          formattedValue = formattedValue.substring(0, 12);
+        }
+      }
+      // Si empieza con 6, 7, 8, 9 (números españoles), agregar +34
+      else if (/^[6789]/.test(formattedValue)) {
+        formattedValue = '+34' + formattedValue;
+        if (formattedValue.length > 12) {
+          formattedValue = formattedValue.substring(0, 12);
+        }
+      }
+      // Si empieza con + pero no es +34, mantener solo el +
+      else if (formattedValue.startsWith('+') && !formattedValue.startsWith('+34')) {
+        // Permitir otros códigos de país
+        if (formattedValue.length > 15) {
+          formattedValue = formattedValue.substring(0, 15);
+        }
+      }
+      
+      setFormData(prev => ({
+        ...prev,
+        [name]: formattedValue
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    console.log('📝 [FRONTEND] Iniciando envío de formulario:', {
+      timestamp: new Date().toISOString(),
+      formData: {
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        appointmentTime: formData.appointmentTime,
+        message: formData.message
+      }
+    });
+    
     if (!formData.name || !formData.phone || !formData.appointmentTime) {
+      console.warn('⚠️ [FRONTEND] Validación fallida: campos requeridos faltantes');
       toast.error("Por favor completa tu nombre, teléfono y horario preferido");
       return;
     }
@@ -68,12 +123,20 @@ export function ContactForm() {
     const phoneRegex = /^(\+34|0034|34)?[6|7|8|9][0-9]{8}$/;
     const cleanPhone = formData.phone.replace(/\s/g, '');
     
+    console.log('📞 [FRONTEND] Validando teléfono:', {
+      original: formData.phone,
+      cleaned: cleanPhone,
+      isValid: phoneRegex.test(cleanPhone)
+    });
+    
     if (!phoneRegex.test(cleanPhone)) {
+      console.error('❌ [FRONTEND] Teléfono inválido:', cleanPhone);
       toast.error("Por favor introduce un número de teléfono español válido (ej: 666123456)");
       return;
     }
 
     setIsSubmitting(true);
+    console.log('🔄 [FRONTEND] Iniciando proceso de envío...');
     
     try {
       // Formatear número de teléfono para España
@@ -86,19 +149,46 @@ export function ContactForm() {
         formattedPhone = '+' + formattedPhone;
       }
 
-      // Enviar SMS de confirmación
-      const smsResult = await sendAppointmentConfirmation(
+      console.log('📱 [FRONTEND] Teléfono formateado:', {
+        original: formData.phone,
+        cleaned: cleanPhone,
+        formatted: formattedPhone
+      });
+
+      console.log('🚀 [FRONTEND] Enviando solicitud al backend:', {
+        url: 'http://localhost:3001/api/appointment',
+        payload: {
+          name: formData.name,
+          phone: formattedPhone,
+          email: formData.email,
+          appointmentTime: formData.appointmentTime,
+          message: formData.message
+        }
+      });
+
+      // Guardar cita en el backend (solo BD, sin SMS)
+      const appointmentResult = await saveAppointment(
         formattedPhone,
         formData.name,
         formData.appointmentTime,
-        formData.message
+        formData.message,
+        formData.email
       );
 
-      if (smsResult.success) {
-        toast.success("¡Cita reservada correctamente! 📱", {
-          description: `SMS de confirmación enviado a ${formattedPhone}. Te contactaremos pronto para confirmar la hora exacta.`,
+      console.log('📨 [FRONTEND] Respuesta del backend:', appointmentResult);
+
+      if (appointmentResult.success) {
+        console.log('✅ [FRONTEND] Cita guardada exitosamente:', {
+          appointmentId: appointmentResult.appointmentId,
+          phone: appointmentResult.phone
+        });
+        
+        toast.success("¡Cita reservada correctamente! ✅", {
+          description: `Cita #${appointmentResult.appointmentId} guardada. Te contactaremos pronto.`,
           duration: 6000,
         });
+        
+        console.log('🔄 [FRONTEND] Reseteando formulario...');
         
         // Reset form
         setFormData({
@@ -108,20 +198,28 @@ export function ContactForm() {
           appointmentTime: '',
           message: ''
         });
+        
+        console.log('✅ [FRONTEND] Formulario reseteado y proceso completado');
       } else {
-        toast.error("Error al enviar confirmación por SMS", {
-          description: smsResult.error || "Inténtalo de nuevo o contacta directamente por teléfono",
+        console.error('❌ [FRONTEND] Error en la solicitud:', appointmentResult.error);
+        toast.error("Error al guardar la cita", {
+          description: appointmentResult.error || "Inténtalo de nuevo o contacta directamente por teléfono",
           duration: 5000,
         });
       }
     } catch (error) {
-      console.error('Error en el formulario:', error);
+      console.error('💥 [FRONTEND] Error crítico en el formulario:', {
+        error: error.message,
+        stack: error.stack,
+        timestamp: new Date().toISOString()
+      });
       toast.error("Error al procesar la solicitud", {
         description: "Por favor inténtalo de nuevo o contacta directamente",
         duration: 5000,
       });
     }
     
+    console.log('🏁 [FRONTEND] Finalizando proceso de envío');
     setIsSubmitting(false);
   };
 
@@ -186,16 +284,30 @@ export function ContactForm() {
                 whileFocus={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}
               >
-                <Input 
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  placeholder="666123456 (sin espacios)"
-                  className="text-base"
-                  required
-                />
+                <div className="relative">
+                  <Input 
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    placeholder="666123456"
+                    className="text-base pr-20"
+                    required
+                  />
+                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-muted-foreground">
+                    {formData.phone ? (
+                      formData.phone.startsWith('+34') ? '✅' : '⚠️'
+                    ) : (
+                      '📱'
+                    )}
+                  </div>
+                </div>
+                {formData.phone && !formData.phone.startsWith('+34') && (
+                  <p className="text-xs text-amber-600 mt-1">
+                    💡 Se añadirá automáticamente +34 si es un número español
+                  </p>
+                )}
               </motion.div>
             </motion.div>
             
