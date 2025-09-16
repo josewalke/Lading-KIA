@@ -120,9 +120,9 @@ export function ContactForm() {
       return;
     }
 
-    // Validar formato de teléfono - acepta cualquier número con al menos 7 dígitos
-    const phoneRegex = /^[\+]?[0-9\s\-\(\)]{7,}$/;
-    const cleanPhone = formData.phone.replace(/\s/g, '');
+    // Validar formato de teléfono - solo números, mínimo 7 dígitos
+    const phoneRegex = /^[0-9]{7,}$/;
+    const cleanPhone = formData.phone.replace(/[^0-9]/g, '');
     
     console.log('📞 [FRONTEND] Validando teléfono:', {
       original: formData.phone,
@@ -132,7 +132,7 @@ export function ContactForm() {
     
     if (!phoneRegex.test(cleanPhone)) {
       console.error('❌ [FRONTEND] Teléfono inválido:', cleanPhone);
-      toast.error("Por favor introduce un número de teléfono válido (mínimo 7 dígitos)");
+      toast.error("Por favor introduce solo números (mínimo 7 dígitos)");
       return;
     }
 
