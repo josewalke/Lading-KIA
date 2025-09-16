@@ -1,5 +1,6 @@
 // Configuración centralizada del backend
-export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://back-landing-kia.onrender.com';
+// En producción, usar rutas relativas para aprovechar el proxy de Netlify
+export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || (import.meta.env.PROD ? '' : 'https://back-landing-kia.onrender.com');
 
 // Endpoints del backend
 export const API_ENDPOINTS = {
