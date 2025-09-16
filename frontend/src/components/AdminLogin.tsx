@@ -5,6 +5,7 @@ import { Button } from './ui/button';
 import { Label } from './ui/label';
 import { toast } from 'sonner';
 import { ChevronDown, ChevronUp, User, Phone, Mail, Clock, MessageSquare, Calendar } from 'lucide-react';
+import { API_ENDPOINTS, getEndpointWithSubpath } from '../config/backend';
 
 interface Appointment {
   id: number;
@@ -54,7 +55,7 @@ const AdminLogin: React.FC = () => {
     setLoading(true);
     try {
       // Fetch appointments
-      const appointmentsResponse = await fetch('http://localhost:3001/api/appointments');
+      const appointmentsResponse = await fetch(API_ENDPOINTS.APPOINTMENTS);
       const appointmentsData = await appointmentsResponse.json();
       
       if (appointmentsData.success) {
@@ -67,7 +68,7 @@ const AdminLogin: React.FC = () => {
       }
 
       // Fetch stats
-      const statsResponse = await fetch('http://localhost:3001/api/stats');
+      const statsResponse = await fetch(API_ENDPOINTS.STATS);
       const statsData = await statsResponse.json();
       
       if (statsData.success) {
@@ -118,12 +119,12 @@ const AdminLogin: React.FC = () => {
 
     try {
       console.log('📡 [FRONTEND] Enviando petición al backend:', {
-        url: `http://localhost:3001/api/appointments/${appointmentId}/leido`,
+        url: getEndpointWithSubpath('APPOINTMENTS', `${appointmentId}/leido`),
         method: 'PUT',
         body: { leido: newStatus === 1 }
       });
 
-      const response = await fetch(`http://localhost:3001/api/appointments/${appointmentId}/leido`, {
+      const response = await fetch(getEndpointWithSubpath('APPOINTMENTS', `${appointmentId}/leido`), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -1,5 +1,5 @@
 // Servicio para guardar citas (sin SMS)
-const BACKEND_URL = 'http://localhost:3001';
+import { API_ENDPOINTS } from '../config/backend';
 
 export interface AppointmentResult {
   success: boolean;
@@ -18,7 +18,7 @@ export async function saveAppointment(
 ): Promise<AppointmentResult> {
   console.log('🌐 [APPOINTMENT-SERVICE] Iniciando guardado de cita:', {
     timestamp: new Date().toISOString(),
-    backendUrl: BACKEND_URL,
+    backendUrl: API_ENDPOINTS.APPOINTMENT,
     payload: {
       name,
       phone,
@@ -31,7 +31,7 @@ export async function saveAppointment(
   try {
     console.log('📡 [APPOINTMENT-SERVICE] Realizando fetch al backend...');
     
-    const response = await fetch(`${BACKEND_URL}/api/appointment`, {
+    const response = await fetch(API_ENDPOINTS.APPOINTMENT, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

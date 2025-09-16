@@ -7,7 +7,7 @@ import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 import { MessageSquare, Send } from "lucide-react";
 import { toast } from "sonner@2.0.3";
-import { saveAppointment } from "../services/smsService";
+import { API_ENDPOINTS } from '../config/backend';
 
 interface FormData {
   name: string;
@@ -156,7 +156,7 @@ export function ContactForm() {
       });
 
       console.log('🚀 [FRONTEND] Enviando solicitud al backend:', {
-        url: 'http://localhost:3001/api/appointment',
+        url: API_ENDPOINTS.APPOINTMENT,
         payload: {
           name: formData.name,
           phone: formattedPhone,
