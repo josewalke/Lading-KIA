@@ -8,6 +8,7 @@ import { Textarea } from "./ui/textarea";
 import { MessageSquare, Send } from "lucide-react";
 import { toast } from "sonner@2.0.3";
 import { API_ENDPOINTS } from '../config/backend';
+import { saveAppointment } from '../services/smsService';
 
 interface FormData {
   name: string;
