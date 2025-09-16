@@ -1,5 +1,5 @@
 // Configuración centralizada del backend
-export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://back-landing-kia.onrender.com';
 
 // Endpoints del backend
 export const API_ENDPOINTS = {
