@@ -12,6 +12,8 @@ export const API_ENDPOINTS = {
   CLIENTES_SEVILLA: `${BACKEND_URL}/api/clientes-sevilla`,
   NUMEROS_MOVILES: `${BACKEND_URL}/api/numeros-moviles`,
   SMS_MESSAGE: `${BACKEND_URL}/api/sms-message`,
+  AUTH_LOGIN: `${BACKEND_URL}/api/auth/login`,
+  AUTH_VERIFY: `${BACKEND_URL}/api/auth/verify`,
 } as const;
 
 // Función para construir URL de endpoint específico

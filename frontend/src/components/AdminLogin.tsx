@@ -6,6 +6,7 @@ import { Label } from './ui/label';
 import { toast } from 'sonner';
 import { ChevronDown, ChevronUp, User, Phone, Mail, Clock, MessageSquare, Calendar } from 'lucide-react';
 import { API_ENDPOINTS, getEndpointWithSubpath } from '../config/backend';
+import authService from '../services/authService';
 
 interface Appointment {
   id: number;
@@ -37,25 +38,68 @@ const AdminLogin: React.FC = () => {
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
   const [readFilter, setReadFilter] = useState<'all' | 'read' | 'unread'>('all');
 
-  // Contraseña secreta (en producción debería estar en variables de entorno)
-  const SECRET_PASSWORD = 'kia-sevilla-2024';
+  // Verificar autenticación al cargar el componente
+  useEffect(() => {
+    const checkAuth = async () => {
+      if (authService.isAuthenticated()) {
+        const isValid = await authService.verifyToken();
+        if (isValid) {
+          setIsAuthenticated(true);
+          fetchData();
+        } else {
+          authService.logout();
+          setIsAuthenticated(false);
+        }
+      }
+    };
+    
+    checkAuth();
+  }, []);
 
-  const handleLogin = () => {
-    if (password === SECRET_PASSWORD) {
-      setIsAuthenticated(true);
-      toast.success('Acceso autorizado');
-      fetchData();
-    } else {
-      toast.error('Contraseña incorrecta');
-      setPassword('');
+  const handleLogin = async () => {
+    if (!password.trim()) {
+      toast.error('Por favor ingresa la contraseña');
+      return;
     }
+
+    setLoading(true);
+    try {
+      const result = await authService.login(password);
+      
+      if (result.success) {
+        setIsAuthenticated(true);
+        toast.success('Acceso autorizado');
+        fetchData();
+      } else {
+        toast.error(result.error || 'Contraseña incorrecta');
+        setPassword('');
+      }
+    } catch (error) {
+      console.error('Error en login:', error);
+      toast.error('Error de conexión');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLogout = () => {
+    authService.logout();
+    setIsAuthenticated(false);
+    setAppointments([]);
+    setStats(null);
+    setExpandedRows(new Set());
+    toast.success('Sesión cerrada');
   };
 
   const fetchData = async () => {
     setLoading(true);
     try {
+      const authHeaders = authService.getAuthHeaders();
+      
       // Fetch appointments
-      const appointmentsResponse = await fetch(API_ENDPOINTS.APPOINTMENTS);
+      const appointmentsResponse = await fetch(API_ENDPOINTS.APPOINTMENTS, {
+        headers: authHeaders
+      });
       const appointmentsData = await appointmentsResponse.json();
       
       if (appointmentsData.success) {
@@ -65,14 +109,22 @@ const AdminLogin: React.FC = () => {
         );
         setAppointments(sortedAppointments);
         console.log('🔍 [FRONTEND] Primeros 3 registros (ORDENADOS):', sortedAppointments.slice(0, 3).map(a => ({id: a.id, name: a.name, date: a.created_at})));
+      } else {
+        console.error('Error fetching appointments:', appointmentsData.error);
+        toast.error('Error al cargar las citas');
       }
 
       // Fetch stats
-      const statsResponse = await fetch(API_ENDPOINTS.STATS);
+      const statsResponse = await fetch(API_ENDPOINTS.STATS, {
+        headers: authHeaders
+      });
       const statsData = await statsResponse.json();
       
       if (statsData.success) {
         setStats(statsData.stats);
+      } else {
+        console.error('Error fetching stats:', statsData.error);
+        toast.error('Error al cargar las estadísticas');
       }
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -124,10 +176,12 @@ const AdminLogin: React.FC = () => {
         body: { leido: newStatus === 1 }
       });
 
+      const authHeaders = authService.getAuthHeaders();
       const response = await fetch(getEndpointWithSubpath('APPOINTMENTS', `${appointmentId}/leido`), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          ...authHeaders,
         },
         body: JSON.stringify({ leido: newStatus === 1 }),
       });
@@ -230,9 +284,10 @@ const AdminLogin: React.FC = () => {
             </div>
             <Button 
               onClick={handleLogin} 
+              disabled={loading}
               className="w-full bg-red-600 hover:bg-red-700"
             >
-              Acceder
+              {loading ? 'Verificando...' : 'Acceder'}
             </Button>
           </CardContent>
         </Card>
@@ -255,7 +310,7 @@ const AdminLogin: React.FC = () => {
               </p>
             </div>
             <Button 
-              onClick={() => setIsAuthenticated(false)}
+              onClick={handleLogout}
               variant="outline"
               className="text-red-600 border-red-600 hover:bg-red-50"
             >

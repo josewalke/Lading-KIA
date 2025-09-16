@@ -1,0 +1,34 @@
+🔐 ACCESO AL PANEL ADMINISTRATIVO KIA
+=====================================
+
+📱 URL: http://localhost:3000/admin
+🔑 Contraseña: kia-sevilla-2024
+
+📊 FUNCIONALIDADES DEL PANEL:
+- Ver todos los registros de citas
+- Estadísticas en tiempo real
+- Dropdown expandible por registro
+- Información completa del formulario
+- Orden del más viejo al más nuevo
+
+🎯 CARACTERÍSTICAS:
+- Solo nombre visible en vista principal
+- Click para expandir detalles completos
+- Información de contacto, horario y mensaje
+- Interfaz responsive para móviles
+
+📈 DATOS DISPONIBLES:
+- 15 registros de prueba con datos realistas
+- Nombres españoles auténticos
+- Teléfonos españoles (+34)
+- Emails variados (Gmail, Hotmail, etc.)
+- Mensajes específicos sobre modelos KIA
+
+🚀 BACKEND:
+- Puerto: 3001
+- Base de datos: SQLite
+- Logs en tiempo real
+- Endpoints API funcionando
+
+📅 Fecha de creación: 16 de septiembre de 2025
+👨‍💻 Desarrollado para: Nuevo Concesionario KIA Sevilla
